@@ -1,0 +1,219 @@
+---
+title: "Traitle Y"
+author: "Mohid Latif"
+date: "2026-03-18"
+output:
+  pdf_document: default
+---
+
+```{r}
+library("ggplot2")
+library("plotrix")
+library("stringr")
+all.data = read.csv("results.csv")  
+diseaseType = all.data$DiseaseType
+penetrance = all.data$Penetrance
+correct = as.integer(all.data$Correct=="true")
+cnt = 0
+M.corrected = c()
+M.sd = c()
+start = 1
+end = 100000
+for(i in 1:20){
+  M.corrected = c(M.corrected, mean(correct[start:end]))
+  M.sd = c(M.sd, 1.96*std.error(correct[start:end]))
+  start = start + 100000
+  end = end + 100000
+}
+
+
+dfM <- data.frame(Penetrance = c("1", "0.95", "0.90", "0.85", "0.80", "0.75", "0.70", "0.65", "0.60", "0.55", "0.50", "0.45", "0.40", "0.35", "0.30", "0.25", "0.20", "0.15", "0.10", "0.05"), AverageCorrect = M.corrected, sd = M.sd)
+ggplot(dfM, aes(x = Penetrance, y = AverageCorrect)) +
+  geom_bar(stat = "identity", fill = "orange" , color = "orange") +
+    labs(
+    x = str_wrap("Penetrance (%)"),
+    y = str_wrap("Average Correct Pedigrees"),
+    title = str_wrap("Classification Accuracy for Mitochondrial Pedigrees with different levels of Penetrance"),
+    subtitle = str_wrap("Traitle Y"),
+    caption = str_wrap("The parental generation consists of 2 individuals. In the F1 generation, each parent has 3-4 children, and in the F2 generation, each F1 individual has 5-7 children.")
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5),
+    plot.caption = element_text(hjust = 0.5) 
+    )+
+  geom_errorbar(aes(ymin = AverageCorrect - sd, ymax = AverageCorrect + sd), width = 0.2)+ 
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.1))
+
+
+  XLD.corrected = c()
+  XLD.sd = c()
+  for(i in 1:20){
+    XLD.corrected = c(XLD.corrected, mean(correct[start:end]))
+    XLD.sd = c(XLD.sd, 1.96*std.error(correct[start:end]))
+    start = start + 100000
+    end = end + 100000
+  }
+ 
+   
+dfXLD <- data.frame(Penetrance = c("1", "0.95", "0.90", "0.85", "0.80", "0.75", "0.70", "0.65", "0.60", "0.55", "0.50", "0.45", "0.40", "0.35", "0.30", "0.25", "0.20", "0.15", "0.10", "0.05"), AverageCorrect = XLD.corrected, sd = XLD.sd)
+ggplot(dfXLD, aes(x = Penetrance, y = AverageCorrect)) +
+  geom_bar(stat = "identity", fill = "blue" , color = "blue") +
+    labs(
+    x = str_wrap("Penetrance (%)"),
+    y = str_wrap("Average Correct Pedigrees"),
+    title = str_wrap("Classification Accuracy for X-Linked Dominant Pedigrees with different levels of Penetrance"),
+    subtitle = str_wrap("Traitle Y"),
+    caption = str_wrap("The parental generation consists of 2 individuals. In the F1 generation, each parent has 3-4 children, and in the F2 generation, each F1 individual has 5-7 children.")
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5),
+    plot.caption = element_text(hjust = 0.5) 
+    )+
+  geom_errorbar(aes(ymin = AverageCorrect - sd, ymax = AverageCorrect + sd), width = 0.2)+ 
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.1))
+  
+  
+  XLR.corrected = c()
+  XLR.sd = c()
+  for(i in 1:20){
+    XLR.corrected = c(XLR.corrected, mean(correct[start:end]))
+    XLR.sd = c(XLR.sd, 1.96*std.error(correct[start:end]))
+    start = start + 100000
+    end = end + 100000
+  }
+dfXLR <- data.frame(Penetrance = c("1", "0.95", "0.90", "0.85", "0.80", "0.75", "0.70", "0.65", "0.60", "0.55", "0.50", "0.45", "0.40", "0.35", "0.30", "0.25", "0.20", "0.15", "0.10", "0.05"), AverageCorrect = XLR.corrected, sd = XLR.sd)
+ggplot(dfXLR, aes(x = Penetrance, y = AverageCorrect)) +
+  geom_bar(stat = "identity", fill = "purple" , color = "purple") +
+  labs(
+    x = str_wrap("Penetrance (%)"),
+    y = str_wrap("Average Correct Pedigrees"),
+    title = str_wrap("Classification Accuracy for X-Linked Recessive Pedigrees with different levels of Penetrance"),
+    subtitle = str_wrap("Traitle Y"),
+    caption = str_wrap("The parental generation consists of 2 individuals. In the F1 generation, each parent has 3-4 children, and in the F2 generation, each F1 individual has 5-7 children.")
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5),
+    plot.caption = element_text(hjust = 0.5) 
+    )+
+  geom_errorbar(aes(ymin = AverageCorrect - sd, ymax = AverageCorrect + sd), width = 0.2)+ 
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.1))
+
+  
+  YL.corrected = c()
+  YL.sd = c()
+  for(i in 1:20){
+    YL.corrected = c(YL.corrected, mean(correct[start:end]))
+    YL.sd = c(YL.sd, 1.96*std.error(correct[start:end]))
+    start = start + 100000
+    end = end + 100000
+  }
+dfYL <- data.frame(Penetrance = c("1", "0.95", "0.90", "0.85", "0.80", "0.75", "0.70", "0.65", "0.60", "0.55", "0.50", "0.45", "0.40", "0.35", "0.30", "0.25", "0.20", "0.15", "0.10", "0.05"), AverageCorrect = YL.corrected, sd = YL.sd)
+ggplot(dfYL, aes(x = Penetrance, y = AverageCorrect)) +
+  geom_bar(stat = "identity", fill = "red" , color = "red") +
+  labs(
+    x = str_wrap("Penetrance (%)"),
+    y = str_wrap("Average Correct Pedigrees"),
+    title = str_wrap("Classification Accuracy for Y-Linked Pedigrees with different levels of Penetrance"),
+    subtitle = str_wrap("Traitle Y"),
+    caption = str_wrap("The parental generation consists of 2 individuals. In the F1 generation, each parent has 3-4 children, and in the F2 generation, each F1 individual has 5-7 children.")
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5),
+    plot.caption = element_text(hjust = 0.5) 
+    )+
+  geom_errorbar(aes(ymin = AverageCorrect - sd, ymax = AverageCorrect + sd), width = 0.2)+ 
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.1))
+
+
+ AD.corrected = c()
+  AD.sd = c()
+  for(i in 1:20){
+    AD.corrected = c(AD.corrected, mean(correct[start:end]))
+    AD.sd = c(AD.sd, 1.96*std.error(correct[start:end]))
+    start = start + 100000
+    end = end + 100000
+  }
+dfAD <- data.frame(Penetrance = c("1", "0.95", "0.90", "0.85", "0.80", "0.75", "0.70", "0.65", "0.60", "0.55", "0.50", "0.45", "0.40", "0.35", "0.30", "0.25", "0.20", "0.15", "0.10", "0.05"), AverageCorrect = AD.corrected, sd = AD.sd)
+ggplot(dfAD, aes(x = Penetrance, y = AverageCorrect)) +
+  geom_bar(stat = "identity", fill = "green" , color = "green") +
+  labs(
+    x = str_wrap("Penetrance (%)"),
+    y = str_wrap("Average Correct Pedigrees"),
+    title = str_wrap("Classification Accuracy for Autosomal Dominant Pedigrees with different levels of Penetrance"),
+    subtitle = str_wrap("Traitle Y"),
+    caption = str_wrap("The parental generation consists of 2 individuals. In the F1 generation, each parent has 3-4 children, and in the F2 generation, each F1 individual has 5-7 children.")
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5),
+    plot.caption = element_text(hjust = 0.5) 
+    )+
+  geom_errorbar(aes(ymin = AverageCorrect - sd, ymax = AverageCorrect + sd), width = 0.2)+ 
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.1))
+
+
+ AR.corrected = c()
+  AR.sd = c()
+  for(i in 1:20){
+    AR.corrected = c(AR.corrected, mean(correct[start:end]))
+    AR.sd = c(AR.sd, 1.96*std.error(correct[start:end]))
+    start = start + 100000
+    end = end + 100000
+  }
+dfAR <- data.frame(Penetrance = c("1", "0.95", "0.90", "0.85", "0.80", "0.75", "0.70", "0.65", "0.60", "0.55", "0.50", "0.45", "0.40", "0.35", "0.30", "0.25", "0.20", "0.15", "0.10", "0.05"), AverageCorrect = AR.corrected, sd = AR.sd)
+ggplot(dfAR, aes(x = Penetrance, y = AverageCorrect)) +
+  geom_bar(stat = "identity", fill = "pink" , color = "pink") +
+  labs(
+    x = str_wrap("Penetrance (%)"),
+    y = str_wrap("Average Correct Pedigrees"),
+    title = str_wrap("Classification Accuracy for Autosomal Recessive Pedigrees with different levels of Penetrance"),
+    subtitle = str_wrap("Traitle Y"),
+    caption = str_wrap("The parental generation consists of 2 individuals. In the F1 generation, each parent has 3-4 children, and in the F2 generation, each F1 individual has 5-7 children.")
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5),
+    plot.caption = element_text(hjust = 0.5) 
+    )+
+  geom_errorbar(aes(ymin = AverageCorrect - sd, ymax = AverageCorrect + sd), width = 0.2)+ 
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.1))
+
+all.data$Correct = as.numeric(as.logical(all.data$Correct))
+
+logistic.all <- glm(Correct ~ DiseaseType * (Penetrance + I(Penetrance^2)), data=all.data, family="binomial")
+summary(logistic.all)
+
+M.log <- all.data %>%
+  dplyr::filter(DiseaseType=="M")
+logistic.M <- glm(Correct ~ Penetrance + I(Penetrance^2), data=M.log, family="binomial")
+summary(logistic.M)
+
+XLD.log <- all.data %>%
+  dplyr::filter(DiseaseType=="XLD")
+logistic.XLD <- glm(Correct ~ Penetrance + I(Penetrance^2), data=XLD.log, family="binomial")
+summary(logistic.XLD)
+
+XLR.log <- all.data %>%
+  dplyr::filter(DiseaseType=="XLR")
+logistic.XLR <- glm(Correct ~ Penetrance + I(Penetrance^2), data=XLR.log, family="binomial")
+summary(logistic.XLR)
+
+YL.log <- all.data %>%
+  dplyr::filter(DiseaseType=="YL")
+logistic.YL <- glm(Correct ~ Penetrance + I(Penetrance^2), data=YL.log, family="binomial")
+summary(logistic.YL)
+
+AD.log <- all.data %>%
+  dplyr::filter(DiseaseType=="AD")
+logistic.AD <- glm(Correct ~ Penetrance + I(Penetrance^2), data=AD.log, family="binomial")
+summary(logistic.AD)
+
+AR.log <- all.data %>%
+  dplyr::filter(DiseaseType=="AR")
+logistic.AR <- glm(Correct ~ Penetrance + I(Penetrance^2), data=AR.log, family="binomial")
+summary(logistic.AR)
+```
